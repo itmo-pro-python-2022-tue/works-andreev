@@ -1,13 +1,29 @@
 class Food:
     count = 0
 
-    def __init__(self, name, price):
+    def __init__(self, name, price, amount=1):
         self.name = name
         self.price = price
-        self.__class__.count += 1
+        self.__amount = amount
+        self.__class__.count += amount
+
+    @property
+    def amount(self):
+        return self.__amount
+
+    @amount.setter
+    def amount(self, value):
+        if value >= 0:
+            self.__class__.count += value - self.__class__.count
+            self.__amount = value
 
     def consume(self):
-        print(f'{self.name} was eaten')
+        if self.__amount > 0:
+            print(f'{self.name} was eaten')
+            self.__amount -= 1
+            self.__class__.count -= 1
+        else:
+            print(f'There is no {self.name} left')
 
     @classmethod
     def get_report(cls):
@@ -18,7 +34,7 @@ class Food:
         return 'Почему в таблице Менделеева йод есть, а зеленки нет?'
 
     def __str__(self):
-        return f'{self.name} за {self.price} руб.'
+        return f'{self.name} за {self.price} руб. ({self.__amount} шт.)'
 
 
 class Drink:
@@ -36,6 +52,7 @@ class Drink:
 
 # Создаём новый объект класса Food
 cake = Food('Тортик', 150)
+cake.consume()
 cake.consume()
 print(cake)
 
