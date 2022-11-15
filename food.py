@@ -6,7 +6,7 @@ class Food:
         self.price = price
         self.__class__.count += 1
 
-    def eat(self):
+    def consume(self):
         print(f'{self.name} was eaten')
 
     @classmethod
@@ -27,7 +27,7 @@ class Drink:
         self.variant = variant
         self.price = price
 
-    def drink(self):
+    def consume(self):
         print(f'{self.name} was drunk')
 
     def __str__(self):
@@ -36,11 +36,11 @@ class Drink:
 
 # Создаём новый объект класса Food
 cake = Food('Тортик', 150)
-cake.eat()
+cake.consume()
 print(cake)
 
 sushi = Food('Суши', 220)
-sushi.eat()
+sushi.consume()
 print(sushi.__str__())
 
 print(Food.get_report())
@@ -48,5 +48,8 @@ print(cake.anecdote())
 print(Food.anecdote())
 
 latte = Drink('Латте', 'Кофе', 190)
-latte.drink()
+latte.consume()
 print(latte)
+
+for item in cake, sushi, latte:
+    item.consume()
