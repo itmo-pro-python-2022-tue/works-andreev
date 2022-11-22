@@ -1,8 +1,13 @@
-class Food:
+class Item:
+    def __init__(self, name):
+        self.name = name
+
+
+class Food(Item):
     count = 0
 
     def __init__(self, name, price, amount=1):
-        self.name = name
+        super().__init__(name)
         self.__price = price
         self.__amount = amount
         self.__class__.count += amount
