@@ -3,7 +3,7 @@ class Food:
 
     def __init__(self, name, price, amount=1):
         self.name = name
-        self.price = price
+        self.__price = price
         self.__amount = amount
         self.__class__.count += amount
 
@@ -34,7 +34,7 @@ class Food:
         return 'Почему в таблице Менделеева йод есть, а зеленки нет?'
 
     def __str__(self):
-        return f'{self.name} за {self.price} руб. ({self.__amount} шт.)'
+        return f'{self.name} за {self.__price} руб. ({self.__amount} шт.)'
 
 
 class Drink:
