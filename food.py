@@ -31,6 +31,17 @@ class Item:
         return f'We have {cls.count} items'
 
 
+class FileItemsExporter:
+    def __init__(self, filename):
+        self.__filename = filename
+
+    def export(self, items):
+        file = open(self.__filename, 'w', encoding='utf-8')
+        for item in items:
+            print(item, file=file)
+        file.close()
+
+
 class Food(Item):
     def __init__(self, name, price, amount=1):
         super().__init__(name, price, amount)
@@ -75,9 +86,13 @@ cake = Food('Тортик', 150, 5)
 sushi = Food('Суши', 220, 3)
 latte = Drink('Латте', 'Кофе', 190, 10)
 kvass = Drink('Хлебный', 'Квас', 70, 5)
+switch = Item('Nintendo Switch', 23990, 1)
 
-for item in cake, sushi, latte, kvass:
+for item in cake, sushi, latte, kvass, switch:
     print(item)
 
 print(Food.get_report())
 print(Drink.get_report())
+
+exporter = FileItemsExporter('items.txt')
+exporter.export([cake, sushi, latte, kvass, switch])
