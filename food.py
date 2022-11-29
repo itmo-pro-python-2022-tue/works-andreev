@@ -1,3 +1,6 @@
+from abc import abstractmethod
+
+
 class Item:
     count = 0
 
@@ -49,7 +52,26 @@ class CSVFileExporter(FileItemsExporter):
             print(item.name, item.price, item.amount, sep=',', file=file)
         file.close()
 
-class Food(Item):
+
+class IConsumable:
+    @abstractmethod
+    def consume(self):
+        pass
+
+
+class ICookable:
+    @abstractmethod
+    def cook(self):
+        pass
+
+
+class IBrewable:
+    @abstractmethod
+    def brew(self):
+        pass
+
+
+class Food(Item, IConsumable, ICookable):
     def __init__(self, name, price, amount=1):
         super().__init__(name, price, amount)
 
@@ -72,8 +94,11 @@ class Food(Item):
     def __str__(self):
         return f'{self.name} за {self._price} руб. ({self._amount} шт.)'
 
+    def cook(self):
+        pass
 
-class Drink(Item):
+
+class Drink(Item, IConsumable, IBrewable):
     def __init__(self, name, variant, price, amount=1):
         super().__init__(name, price, amount)
         self.variant = variant
@@ -87,6 +112,9 @@ class Drink(Item):
 
     def __str__(self):
         return f'{self.variant} "{self.name}" за {self.price} руб. ({self._amount} шт.)'
+
+    def brew(self):
+        pass
 
 
 cake = Food('Тортик', 150, 5)
