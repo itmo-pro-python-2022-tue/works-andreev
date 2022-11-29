@@ -33,14 +33,21 @@ class Item:
 
 class FileItemsExporter:
     def __init__(self, filename):
-        self.__filename = filename
+        self._filename = filename
 
     def export(self, items):
-        file = open(self.__filename, 'w', encoding='utf-8')
+        file = open(self._filename, 'w', encoding='utf-8')
         for item in items:
             print(item, file=file)
         file.close()
 
+
+class CSVFileExporter(FileItemsExporter):
+    def export(self, items):
+        file = open(self._filename, 'w', encoding='utf-8')
+        for item in items:
+            print(item.name, item.price, item.amount, sep=',', file=file)
+        file.close()
 
 class Food(Item):
     def __init__(self, name, price, amount=1):
@@ -96,3 +103,6 @@ print(Drink.get_report())
 
 exporter = FileItemsExporter('items.txt')
 exporter.export([cake, sushi, latte, kvass, switch])
+
+table_exporter = CSVFileExporter('items.csv')
+table_exporter.export([cake, sushi, latte, kvass, switch])
