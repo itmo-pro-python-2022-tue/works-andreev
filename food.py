@@ -28,6 +28,8 @@ class Item:
         if value >= 0:
             self.__class__.count += value - self.__class__.count
             self._amount = value
+        else:
+            raise ValueError('Cannot set negative amount of item')
 
     @classmethod
     def get_report(cls):
@@ -128,6 +130,8 @@ for item in cake, sushi, latte, kvass, switch:
 
 print(Food.get_report())
 print(Drink.get_report())
+
+cake.amount -= 8
 
 exporter = FileItemsExporter('items.txt')
 exporter.export([cake, sushi, latte, kvass, switch])
