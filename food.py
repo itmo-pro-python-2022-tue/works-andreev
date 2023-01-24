@@ -2,20 +2,20 @@ from abc import abstractmethod
 
 
 class Item:
-    count = 0
+    count: int = 0
 
-    def __init__(self, name, price, amount):
-        self.name = name
-        self._price = price
-        self._amount = amount
+    def __init__(self, name: str, price: int, amount: int) -> None:
+        self.name: str = name
+        self._price: int = price
+        self._amount: int = amount
         self.__class__.count += amount
 
     @property
-    def price(self):
+    def price(self) -> int:
         return self._price
 
     @price.setter
-    def price(self, value):
+    def price(self, value: int) -> None:
         if value >= 10:
             self._price = value
 
@@ -119,11 +119,11 @@ class Drink(Item, IConsumable, IBrewable):
         pass
 
 
-cake = Food('Тортик', 150, 5)
-sushi = Food('Суши', 220, 3)
-latte = Drink('Латте', 'Кофе', 190, 10)
-kvass = Drink('Хлебный', 'Квас', 70, 5)
-switch = Item('Nintendo Switch', 23990, 1)
+cake: Food = Food('Тортик', 150, 5)
+sushi: Food = Food('Суши', 220, 3)
+latte: Drink = Drink('Латте', 'Кофе', 190, 10)
+kvass: Drink = Drink('Хлебный', 'Квас', 70, 5)
+switch: Item = Item('Nintendo Switch', 23990, 1)
 
 for item in cake, sushi, latte, kvass, switch:
     print(item)
@@ -133,8 +133,8 @@ print(Drink.get_report())
 
 cake.amount -= 8
 
-exporter = FileItemsExporter('items.txt')
+exporter: FileItemsExporter = FileItemsExporter('items.txt')
 exporter.export([cake, sushi, latte, kvass, switch])
 
-table_exporter = CSVFileExporter('items.csv')
+table_exporter: CSVFileExporter = CSVFileExporter('items.csv')
 table_exporter.export([cake, sushi, latte, kvass, switch])
