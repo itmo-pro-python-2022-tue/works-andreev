@@ -14,6 +14,17 @@ class Pokemon(BasePokemon):
     pokemon_id: int
     height: int
     weight: int
+    stats: 'PokemonStats'
+
+
+@dataclass(frozen=True)
+class PokemonStats:
+    hp: int
+    attack: int
+    defence: int
+    special_attack: int
+    special_defence: int
+    speed: int
 
 
 class PokeAPI:
@@ -22,10 +33,17 @@ class PokeAPI:
     def get_pokemon(name: Union[int, str]) -> Pokemon:
         url = f'https://pokeapi.co/api/v2/pokemon/{name}/'
         data = requests.get(url).json()
+        stats = PokemonStats(hp=data['stats'][0]['base_stat'],
+                             attack=data['stats'][1]['base_stat'],
+                             defence=data['stats'][2]['base_stat'],
+                             special_attack=data['stats'][3]['base_stat'],
+                             special_defence=data['stats'][4]['base_stat'],
+                             speed=data['stats'][5]['base_stat'])
         pokemon = Pokemon(pokemon_id=data['id'],
                           name=data['name'],
                           height=data['height'],
-                          weight=data['weight'])
+                          weight=data['weight'],
+                          stats=stats)
         return pokemon
 
     @staticmethod
