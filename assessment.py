@@ -1,46 +1,24 @@
+from dataclasses import dataclass
 from typing import Union, Generator, Optional
+from functools import lru_cache
 import requests
 
 
+@dataclass(frozen=True)
 class BasePokemon:
-    _name: str
-
-    def __init__(self, name: str) -> None:
-        self._name = name
-
-    def __str__(self):
-        return f'BasePokemon(name={self._name})'
+    name: str
 
 
+@dataclass(frozen=True)
 class Pokemon(BasePokemon):
-    __pokemon_id: int
-    __height: int
-    __weight: int
-
-    def __init__(self, pokemon_id: int, name: str, height: int, weight: int) -> None:
-        super().__init__(name)
-        self.__pokemon_id = pokemon_id
-        self.__height = height
-        self.__weight = weight
-
-    def get_name(self) -> str:
-        return self._name
-
-    def get_id(self) -> int:
-        return self.__pokemon_id
-
-    def get_weight(self) -> int:
-        return self.__weight
-
-    def get_height(self) -> int:
-        return self.__height
-
-    def __str__(self) -> str:
-        return f'Pokemon(id={self.__pokemon_id}, name={self._name}, height={self.__height}, weight={self.__weight})'
+    pokemon_id: int
+    height: int
+    weight: int
 
 
 class PokeAPI:
     @staticmethod
+    @lru_cache
     def get_pokemon(name: Union[int, str]) -> Pokemon:
         url = f'https://pokeapi.co/api/v2/pokemon/{name}/'
         data = requests.get(url).json()
@@ -69,11 +47,12 @@ class PokeAPI:
 
 print(PokeAPI.get_pokemon('ditto'))
 # print(PokeAPI.get_pokemon(97))
+
 count = 0
 fattest: Optional[Pokemon] = None
 for pokemon in PokeAPI.get_all(True):
     print(pokemon)
-    if fattest is not None and fattest.get_weight() < pokemon.get_weight():
+    if fattest is not None and fattest.weight < pokemon.weight:
         fattest = pokemon
     elif fattest is None:
         fattest = pokemon
